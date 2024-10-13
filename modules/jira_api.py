@@ -12,11 +12,7 @@ API_DELAY_MS = 100 # Delay in between API calls (because we're making multiple r
 API_TIMEOUT = 60 # Timeout for API calls in seconds
 
 def delayed_api(func):
-    """Decorator to add a delay in between API calls
-    """
-
     def wrapper(*args, **kwargs):
-        log.debug("Delaying API call by {}ms".format(API_DELAY_MS))
         if API_DELAY_MS:
             time.sleep(API_DELAY_MS / 1000.0)
         return func(*args, **kwargs)
@@ -37,16 +33,6 @@ class JIRA(object):
         log.error("{} [{}] {}".format(error_message, response.status_code, response.json()))
 
     def __init__(self, server_url, username, api_token):
-        """Create a new JIRA Webclient
-
-        Args:
-            server_url: str
-                JIRA server side URL
-            username: str
-                Atlassian account email (`@atlassian.com`) associated with JIRA server
-            api_token: str
-                User API token generated from `https://id.atlassian.com/manage/api-tokens`
-        """
         self.server_url = server_url
         self.username = username
         self.api_token = api_token

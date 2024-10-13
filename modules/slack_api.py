@@ -8,16 +8,15 @@ SLACK_PAGINATION_LIMIT = 30 # Pagination limit for Slack 'list_users'
 API_DELAY_MS = 100 # Delay in between API calls (because we're making multiple requests, and do not want to exceed rate limits)
 API_TIMEOUT = 60 # Timeout for API calls in seconds
 
-def delayed_api(func): #Decorator to add a delay in between API calls
+def delayed_api(func):
     def wrapper(*args, **kwargs):
-        log.debug("Delaying API call by {}ms".format(API_DELAY_MS))
         if API_DELAY_MS:
             time.sleep(API_DELAY_MS / 1000.0)
         return func(*args, **kwargs)
 
     return wrapper
 
-def gather_slack_details(client):
+def get_slack_details(client):
     """Returns a dict of all users (not bots, with email IDs) for a given workspace
     (as authenticated by SLACK_BOT_TOKEN)
 
