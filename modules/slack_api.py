@@ -28,7 +28,6 @@ def get_slack_details(client):
             Returns a dict, where the keys are 'emails' and values are tuples of Slack usernames
             (which can be tagged with `@`) and Slack IDs
     """
-
     # Helper method to call a page of users
     @delayed_api
     def _get_active_users(client, next_cursor=None):
@@ -47,4 +46,15 @@ def get_slack_details(client):
     while next_cursor:
         next_active_users, next_cursor = _get_active_users(client, next_cursor)
         active_users.update(next_active_users)
+    return active_users
+
+# This method works for single user (need improvement on main.py to use)
+def get_slack_detail_for_single_user(client, slack_id):
+    response = client.users_info(
+        user='U08LHGS5005'
+    )
+    log.info(response)
+    user = response['user']
+
+    active_users = {user['profile']['email']: (user['name'], user['id'])}
     return active_users

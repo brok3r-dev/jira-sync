@@ -20,6 +20,8 @@ if __name__ == "__main__":
     username = args['DEFAULT']['USERNAME']
     jira_apikey = args['DEFAULT']['APIKEY']
 
+    log.info("Slack and Jira user sync started.")
+
     # Gather list of slack users associated with slack token's workspace
     slack_client = WebClient(token=slack_token)
     slack_users = slack_api.get_slack_details(slack_client)
