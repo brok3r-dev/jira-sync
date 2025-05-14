@@ -20,13 +20,28 @@ if __name__ == "__main__":
     username = args['DEFAULT']['USERNAME']
     jira_apikey = args['DEFAULT']['APIKEY']
 
+    slack_choice=input("Enter your sync method: FULL or SINGLE ")
+
     log.info("Slack and Jira user sync started.")
+    slack_client = WebClient(token=slack_token)
 
     # Gather list of slack users associated with slack token's workspace
-    slack_client = WebClient(token=slack_token)
-    slack_users = slack_api.get_slack_details(slack_client)
-    total_users = len(slack_users)
-
+    # slack_choice:
+    #   FULL: This will load all users in Slack workspace.
+    #   SINGLE: This will sync one Slack user entered.
+    #   else: Fails and exit program
+    match slack_choice:
+        case 'FULL':
+            slack_users = slack_api.get_slack_details(slack_client)
+            total_users = len(slack_users)
+        case 'SINGLE':
+            slack_id=input("Enter user's slack id: ")
+            slack_users = slack_api.get_slack_detail_for_single_user(slack_client,slack_id)
+            total_users = len(slack_users)
+        case _:
+            print("Invalid Input. Exiting.")
+            exit()
+    
     # Check if user exists
     if not slack_users:
         log.warning("No user found. Exiting.")

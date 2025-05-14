@@ -48,10 +48,10 @@ def get_slack_details(client):
         active_users.update(next_active_users)
     return active_users
 
-# This method works for single user (need improvement on main.py to use)
+# This method works for single user
 def get_slack_detail_for_single_user(client, slack_id):
     response = client.users_info(
-        user='U08LHGS5005'
+        user=slack_id
     )
     log.info(response)
     user = response['user']
